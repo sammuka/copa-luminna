@@ -48,11 +48,11 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-5xl">
         {['DIAS', 'HORAS', 'MINUTOS', 'SEGUNDOS'].map((label, idx) => (
           <div key={label} className="relative">
-            <div className="glass rounded-2xl p-6 md:p-8 border border-blue-400/30 shadow-[0_0_40px_rgba(59,130,246,0.3)] animate-[pulse-glow_3s_ease-in-out_infinite] flex flex-col items-center justify-center">
-              <div className="font-display font-black text-5xl md:text-7xl text-gradient-blue tabular-nums">
+            <div className="glass rounded-2xl p-4 md:p-8 border border-blue-400/30 shadow-[0_0_40px_rgba(59,130,246,0.3)] animate-[pulse-glow_3s_ease-in-out_infinite] flex flex-col items-center justify-center">
+              <div className="font-display font-black text-4xl md:text-7xl text-gradient-blue tabular-nums">
                 --
               </div>
-              <div className="text-xs md:text-sm uppercase tracking-[0.3em] text-blue-300 mt-3">
+              <div className="text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] text-blue-300 mt-2 md:mt-3">
                 {label}
               </div>
             </div>
@@ -91,11 +91,11 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-5xl">
       {units.map((unit, idx) => (
         <div key={unit.label} className="relative">
-          <div className="glass rounded-2xl p-6 md:p-8 border border-blue-400/30 shadow-[0_0_40px_rgba(59,130,246,0.3)] animate-[pulse-glow_3s_ease-in-out_infinite] flex flex-col items-center justify-center">
-            <div className="font-display font-black text-5xl md:text-7xl text-gradient-blue tabular-nums">
+          <div className="glass rounded-2xl p-4 md:p-8 border border-blue-400/30 shadow-[0_0_40px_rgba(59,130,246,0.3)] animate-[pulse-glow_3s_ease-in-out_infinite] flex flex-col items-center justify-center">
+            <div className="font-display font-black text-4xl md:text-7xl text-gradient-blue tabular-nums">
               {String(unit.value).padStart(2, '0')}
             </div>
-            <div className="text-xs md:text-sm uppercase tracking-[0.3em] text-blue-300 mt-3">
+            <div className="text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] text-blue-300 mt-2 md:mt-3">
               {unit.label}
             </div>
           </div>

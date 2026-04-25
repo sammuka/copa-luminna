@@ -9,7 +9,7 @@ export default function AudioPlayer() {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    audio.volume = 0.7;
+    audio.volume = 0.5;
     audio.loop = true;
     audio.muted = true;
     audio.play().catch(() => {});
@@ -31,7 +31,7 @@ export default function AudioPlayer() {
       <button
         onClick={toggle}
         title={muted ? "Ligar som" : "Desligar som"}
-        className={`fixed bottom-5 left-5 z-50 flex items-center gap-2 px-3 h-11 rounded-full${muted ? " animate-pulse" : ""}`}
+        className={`fixed bottom-5 right-5 md:left-5 md:right-auto z-50 flex items-center gap-2 px-3 h-11 rounded-full${muted ? " animate-pulse" : ""}`}
         style={{
           background: muted ? "rgba(220,50,50,0.75)" : "rgba(0,0,0,0.55)",
           border: "1.5px solid rgba(255,255,255,0.25)",

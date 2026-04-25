@@ -11,14 +11,19 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
   return (
     <section
       id="tabela"
-      className="scroll-mt-20 py-20 md:py-28 max-w-7xl mx-auto px-6"
+      className="scroll-mt-20 py-10 md:py-28 max-w-7xl mx-auto px-6"
     >
-      <div className="text-center mb-12 space-y-4">
+      <div className="text-center mb-12 space-y-5">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300 text-xs font-semibold uppercase tracking-widest">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          Em breve · Cadastros abertos
+        </div>
         <h2 className="font-display font-black text-3xl md:text-5xl text-gradient-blue">
           Tabela Oficial · Copa do Mundo 2026
         </h2>
-        <p className="text-blue-200/80 max-w-2xl mx-auto">
-          Prévia da tabela oficial enquanto preparamos a experiência interativa.
+        <p className="text-blue-100/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+          Estamos finalizando a plataforma de palpites. <br className="hidden md:block" />
+          <span className="text-cyan-300 font-semibold">Confira a tabela oficial</span> enquanto a experiência interativa fica pronta.
         </p>
       </div>
 
@@ -92,11 +97,11 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
         <object
           data={`${src}#view=FitH&toolbar=1&navpanes=0`}
           type="application/pdf"
-          className="w-full h-[75vh] md:h-[85vh] rounded-xl bg-white"
+          className="w-full h-[55vw] min-h-[280px] md:h-[85vh] rounded-xl bg-white"
         >
           <iframe
             src={`${src}#view=FitH&toolbar=1&navpanes=0`}
-            className="w-full h-[75vh] md:h-[85vh] rounded-xl bg-white"
+            className="w-full h-[55vw] min-h-[280px] md:h-[85vh] rounded-xl bg-white"
             title={title || 'PDF Viewer'}
           >
             <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">

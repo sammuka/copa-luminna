@@ -8,17 +8,17 @@ const TICKER_CONTENT = `${TICKER_TEXT} — ${TICKER_TEXT} — ${TICKER_TEXT}`;
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center relative px-6 py-24">
-      <div className="flex flex-col items-center gap-8 md:gap-12 w-full max-w-7xl">
+    <section className="min-h-screen flex flex-col items-center justify-center md:justify-center relative px-6 pt-16 pb-6 md:py-24">
+      <div className="flex flex-col items-center gap-5 md:gap-12 w-full max-w-7xl">
         <div
-          className="glass px-5 py-2 rounded-full text-xs md:text-sm uppercase tracking-[0.3em] text-cyan-accent animate-[fade-in-up_0.8s_ease-out]"
+          className="glass px-4 py-2 rounded-full text-xs md:text-sm uppercase tracking-[0.15em] md:tracking-[0.3em] text-cyan-accent animate-[fade-in-up_0.8s_ease-out] whitespace-nowrap"
           style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}
         >
           FIFA World Cup 26 · Experiência Imersiva
         </div>
 
         <div
-          className="relative"
+          className="relative animate-[fade-in-up_0.8s_ease-out]"
           style={{ animationDelay: '0.3s', opacity: 0, animationFillMode: 'forwards' }}
         >
           <div className="absolute inset-0 bg-white/5 blur-2xl rounded-full scale-110" />
@@ -28,7 +28,7 @@ export default function Hero() {
             width={360}
             height={90}
             priority
-            className="relative z-10 drop-shadow-[0_0_30px_rgba(59,130,246,0.6)] animate-[float_6s_ease-in-out_infinite]"
+            className="relative z-10 drop-shadow-[0_0_30px_rgba(59,130,246,0.6)] animate-[float_6s_ease-in-out_infinite] !w-48 md:!w-[360px] !h-auto"
           />
         </div>
 
@@ -48,8 +48,8 @@ export default function Hero() {
           className="max-w-2xl text-base md:text-xl text-blue-200/90 font-sans leading-relaxed text-center animate-[fade-in-up_0.8s_ease-out]"
           style={{ animationDelay: '0.7s', opacity: 0, animationFillMode: 'forwards' }}
         >
-          Em breve, a experiência interativa mais imersiva para viver cada lance da{' '}
-          <strong className="text-cyan-accent">Copa do Mundo 2026</strong>. Tabela oficial e muito mais — com a inteligência da Luminna AI.
+          Em breve, faça seus palpites na{' '}
+          <strong className="text-cyan-accent">Copa do Mundo FIFA 2026</strong>. Tabela oficial, jogos e muito mais — tudo em um só lugar.
         </p>
 
         <div
@@ -60,7 +60,7 @@ export default function Hero() {
         </div>
 
         <div
-          className="w-full max-w-5xl overflow-hidden glass rounded-full py-4 border border-blue-400/20 animate-[fade-in-up_0.8s_ease-out]"
+          className="hidden md:block w-full max-w-5xl overflow-hidden glass rounded-full py-4 border border-blue-400/20 animate-[fade-in-up_0.8s_ease-out]"
           style={{ animationDelay: '1.1s', opacity: 0, animationFillMode: 'forwards' }}
         >
           <div className="whitespace-nowrap text-sm md:text-base font-display font-bold tracking-[0.15em] text-blue-300 animate-[ticker_30s_linear_infinite]">
