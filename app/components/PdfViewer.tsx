@@ -140,17 +140,14 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
 
 function MascoteVideo() {
   return (
-    <div className="relative w-40 md:w-full rounded-2xl overflow-hidden" style={{ maxHeight: '270px' }}>
-      {/* Fade lateral esquerdo ~20% */}
-      <div
-        className="absolute inset-y-0 left-0 z-10 pointer-events-none"
-        style={{ width: '20%', background: 'linear-gradient(to right, rgba(2,6,23,1), transparent)' }}
-      />
-      {/* Fade lateral direito ~20% */}
-      <div
-        className="absolute inset-y-0 right-0 z-10 pointer-events-none"
-        style={{ width: '20%', background: 'linear-gradient(to left, rgba(2,6,23,1), transparent)' }}
-      />
+    <div
+      className="w-40 md:w-full overflow-hidden"
+      style={{
+        maxHeight: '270px',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%)',
+        maskImage: 'linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%)',
+      }}
+    >
       <video
         src="/assets/mascote-embaixadinha.mp4"
         autoPlay
