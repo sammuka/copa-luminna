@@ -117,6 +117,54 @@ export default function ScrollVideoController({
       }
     };
 
+    // Scroll manual com play: detecta direção e velocidade do scroll para controlar playbackRate
+    let lastScrollY = window.scrollY;
+    let lastScrollTime = performance.now();
+    let scrollVelocity = 0; // px/ms
+    let manualPlayTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const onScroll = () => {
+      const now = performance.now();
+      const dy = window.scrollY - lastScrollY;
+      const dt = now - lastScrollTime;
+      if (dt > 0) scrollVelocity = dy / dt;
+      lastScrollY = window.scrollY;
+      lastScrollTime = now;
+
+      if (isAutoScrolling) return;
+
+      const d = video.duration;
+      if (!Number.isFinite(d) || d <= 0) return;
+
+      const scrollRange = container.offsetHeight - window.innerHeight;
+      if (scrollRange <= 0) return;
+
+      // Converte velocidade de scroll (px/ms) para playbackRate do vídeo
+      // scrollRange px corresponde a d segundos de vídeo
+      const pxPerSecVideo = scrollRange / d;
+      const rate = (scrollVelocity * 1000) / pxPerSecVideo; // px/ms → px/s → videoRate
+
+      if (Math.abs(rate) > 0.05) {
+        video.playbackRate = Math.max(0.0625, Math.min(16, Math.abs(rate)));
+        if (rate > 0 && video.paused) video.play().catch(() => {});
+        if (rate < 0) {
+          // Retroceder: seek direto (browsers não suportam playbackRate negativo)
+          video.pause();
+          seekTo(rangeP(getProgress(), VIDEO_START, VIDEO_END) * d);
+        }
+        // Para o play depois que o scroll parar
+        if (manualPlayTimeout) clearTimeout(manualPlayTimeout);
+        manualPlayTimeout = setTimeout(() => {
+          video.pause();
+          // Seek final para sincronizar exatamente com a posição do scroll
+          lastSeekedTime = -1;
+          seekTo(rangeP(getProgress(), VIDEO_START, VIDEO_END) * d);
+        }, 150);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     const masterLoop = () => {
       if (!running) return;
 
@@ -126,14 +174,6 @@ export default function ScrollVideoController({
           stopVideoPlay();
         } else {
           window.scrollBy(0, autoScrollSpeed);
-        }
-      } else {
-        // Scroll manual: seek throttled para acompanhar
-        const p = getProgress();
-        const videoP = rangeP(p, VIDEO_START, VIDEO_END);
-        const d = video.duration;
-        if (Number.isFinite(d) && d > 0) {
-          seekTo(videoP * d);
         }
       }
 
@@ -180,6 +220,8 @@ export default function ScrollVideoController({
       running = false;
       cancelAnimationFrame(rafId);
       video.pause();
+      if (manualPlayTimeout) clearTimeout(manualPlayTimeout);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('wheel', onScrollFromTop);
       window.removeEventListener('touchmove', onScrollFromTop);
       window.removeEventListener('touchstart', onUserInterrupt);
@@ -203,7 +245,7 @@ export default function ScrollVideoController({
           playsInline
           muted
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover object-top"
+          className={`absolute inset-0 w-full h-full ${isMobile ? 'object-contain' : 'object-cover object-top'}`}
           style={{ zIndex: 0, opacity: 0 }}
         />
 
