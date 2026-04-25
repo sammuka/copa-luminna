@@ -23,7 +23,7 @@ export default function Home() {
       <AnimatedBackground />
       <AudioPlayer />
       <main className="relative z-10">
-        <ScrollVideoController src="/assets/luminna-background.mp4" scrubVhMobile={80}>
+        <ScrollVideoController src="/assets/luminna-background.mp4" scrubVhMobile={350}>
           <Hero />
         </ScrollVideoController>
         <PdfViewer src="/assets/tabelacopa-2026-ok.pdf" title="Tabela Copa do Mundo 2026" />

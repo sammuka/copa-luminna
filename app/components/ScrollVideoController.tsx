@@ -70,20 +70,7 @@ export default function ScrollVideoController({
     let running = true;
     let rafId: number;
 
-    // Calcula a taxa de playback para que o vídeo termine exatamente
-    // quando o auto-scroll terminar a região VIDEO_START → VIDEO_END
-    const calcPlaybackRate = () => {
-      const d = video.duration;
-      if (!Number.isFinite(d) || d <= 0) return 1;
-      const scrollRange = container.offsetHeight - window.innerHeight;
-      if (scrollRange <= 0) return 1;
-      // px que o auto-scroll percorre na faixa do vídeo
-      const videoPxRange = scrollRange * VIDEO_RANGE;
-      // segundos de scroll para atravessar essa faixa a autoScrollSpeed px/frame ~60fps
-      const scrollSecs = videoPxRange / (autoScrollSpeed * 60);
-      return d / scrollSecs;
-    };
-
+    // Seek throttled a ~30fps — apenas quando o alvo mudou o suficiente
     const seekTo = (time: number) => {
       const d = video.duration;
       if (!Number.isFinite(d) || d <= 0) return;
@@ -99,6 +86,17 @@ export default function ScrollVideoController({
       } catch { /* ignore */ }
     };
 
+    // Auto-scroll: play com playbackRate calculado para sincronia perfeita
+    const calcPlaybackRate = () => {
+      const d = video.duration;
+      if (!Number.isFinite(d) || d <= 0) return 1;
+      const scrollRange = container.offsetHeight - window.innerHeight;
+      if (scrollRange <= 0) return 1;
+      const videoPxRange = scrollRange * VIDEO_RANGE;
+      const scrollSecs = videoPxRange / (autoScrollSpeed * 60);
+      return d / scrollSecs;
+    };
+
     const startVideoPlay = () => {
       const rate = calcPlaybackRate();
       video.playbackRate = Math.max(0.0625, Math.min(16, rate));
@@ -107,73 +105,31 @@ export default function ScrollVideoController({
 
     const stopVideoPlay = () => {
       video.pause();
-      // Seek para sincronizar exatamente com a posição do scroll
+      lastSeekedTime = -1;
       const p = getProgress();
-      const videoP = rangeP(p, VIDEO_START, VIDEO_END);
       const d = video.duration;
       if (Number.isFinite(d) && d > 0) {
-        lastSeekedTime = -1; // força o seek
-        seekTo(videoP * d);
+        seekTo(rangeP(p, VIDEO_START, VIDEO_END) * d);
       }
     };
-
-    // Scroll manual com play: detecta direção e velocidade do scroll para controlar playbackRate
-    let lastScrollY = window.scrollY;
-    let lastScrollTime = performance.now();
-    let scrollVelocity = 0; // px/ms
-    let manualPlayTimeout: ReturnType<typeof setTimeout> | null = null;
-
-    const onScroll = () => {
-      const now = performance.now();
-      const dy = window.scrollY - lastScrollY;
-      const dt = now - lastScrollTime;
-      if (dt > 0) scrollVelocity = dy / dt;
-      lastScrollY = window.scrollY;
-      lastScrollTime = now;
-
-      if (isAutoScrolling) return;
-
-      const d = video.duration;
-      if (!Number.isFinite(d) || d <= 0) return;
-
-      const scrollRange = container.offsetHeight - window.innerHeight;
-      if (scrollRange <= 0) return;
-
-      // Converte velocidade de scroll (px/ms) para playbackRate do vídeo
-      // scrollRange px corresponde a d segundos de vídeo
-      const pxPerSecVideo = scrollRange / d;
-      const rate = (scrollVelocity * 1000) / pxPerSecVideo; // px/ms → px/s → videoRate
-
-      if (Math.abs(rate) > 0.05) {
-        video.playbackRate = Math.max(0.0625, Math.min(16, Math.abs(rate)));
-        if (rate > 0 && video.paused) video.play().catch(() => {});
-        if (rate < 0) {
-          // Retroceder: seek direto (browsers não suportam playbackRate negativo)
-          video.pause();
-          seekTo(rangeP(getProgress(), VIDEO_START, VIDEO_END) * d);
-        }
-        // Para o play depois que o scroll parar
-        if (manualPlayTimeout) clearTimeout(manualPlayTimeout);
-        manualPlayTimeout = setTimeout(() => {
-          video.pause();
-          // Seek final para sincronizar exatamente com a posição do scroll
-          lastSeekedTime = -1;
-          seekTo(rangeP(getProgress(), VIDEO_START, VIDEO_END) * d);
-        }, 150);
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
 
     const masterLoop = () => {
       if (!running) return;
 
+      // Auto-scroll: avança o scroll e verifica fim
       if (isAutoScrolling) {
         if (container.getBoundingClientRect().bottom <= window.innerHeight) {
           isAutoScrolling = false;
           stopVideoPlay();
         } else {
           window.scrollBy(0, autoScrollSpeed);
+        }
+      } else {
+        // Scroll manual (desktop e mobile): seek position-based
+        const p = getProgress();
+        const d = video.duration;
+        if (Number.isFinite(d) && d > 0) {
+          seekTo(rangeP(p, VIDEO_START, VIDEO_END) * d);
         }
       }
 
@@ -212,7 +168,6 @@ export default function ScrollVideoController({
     window.addEventListener('wheel', onScrollFromTop, opts);
     window.addEventListener('touchmove', onScrollFromTop, opts);
     window.addEventListener('touchstart', onUserInterrupt, opts);
-    // Clique ou tecla também interrompem o auto-scroll
     window.addEventListener('pointerdown', onUserInterrupt, opts);
     window.addEventListener('keydown', onUserInterrupt, opts);
 
@@ -220,8 +175,6 @@ export default function ScrollVideoController({
       running = false;
       cancelAnimationFrame(rafId);
       video.pause();
-      if (manualPlayTimeout) clearTimeout(manualPlayTimeout);
-      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('wheel', onScrollFromTop);
       window.removeEventListener('touchmove', onScrollFromTop);
       window.removeEventListener('touchstart', onUserInterrupt);
@@ -231,6 +184,11 @@ export default function ScrollVideoController({
   }, [ease, autoScrollSpeed]);
 
   const totalVh = 100 + (isMobile ? scrubVhMobile : scrubVh);
+
+  const mobileMask = {
+    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%)',
+    maskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%)',
+  };
 
   return (
     <div
@@ -246,7 +204,7 @@ export default function ScrollVideoController({
           muted
           preload="auto"
           className={`absolute inset-0 w-full h-full ${isMobile ? 'object-contain' : 'object-cover object-top'}`}
-          style={{ zIndex: 0, opacity: 0 }}
+          style={{ zIndex: 0, opacity: 0, ...(isMobile ? mobileMask : {}) }}
         />
 
         <div
