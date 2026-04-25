@@ -144,8 +144,8 @@ function MascoteVideo() {
       className="w-40 md:w-full overflow-hidden"
       style={{
         maxHeight: '270px',
-        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%)',
-        maskImage: 'linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%)',
+        maskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%)',
       }}
     >
       <video
