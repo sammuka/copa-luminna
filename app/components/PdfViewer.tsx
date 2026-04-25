@@ -109,8 +109,8 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
           </div>
         </div>
 
-        {/* Mascote flutuante à direita no desktop — sticky */}
-        <div className="hidden md:block w-52 lg:w-64 shrink-0 sticky top-8 self-start">
+        {/* Mascote flutuante à direita no desktop — sticky na parte inferior do viewport */}
+        <div className="hidden md:block w-52 lg:w-64 shrink-0 sticky" style={{ top: 'calc(100vh - 300px)' }}>
           <MascoteVideo />
         </div>
       </div>
@@ -140,16 +140,16 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
 
 function MascoteVideo() {
   return (
-    <div className="relative w-40 md:w-full overflow-hidden rounded-2xl">
-      {/* Fade lateral esquerdo */}
+    <div className="relative w-40 md:w-full rounded-2xl overflow-hidden" style={{ maxHeight: '270px' }}>
+      {/* Fade lateral esquerdo ~20% */}
       <div
-        className="absolute inset-y-0 left-0 w-10 z-10 pointer-events-none"
-        style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.85), transparent)' }}
+        className="absolute inset-y-0 left-0 z-10 pointer-events-none"
+        style={{ width: '20%', background: 'linear-gradient(to right, rgba(2,6,23,1), transparent)' }}
       />
-      {/* Fade lateral direito */}
+      {/* Fade lateral direito ~20% */}
       <div
-        className="absolute inset-y-0 right-0 w-10 z-10 pointer-events-none"
-        style={{ background: 'linear-gradient(to left, rgba(2,6,23,0.85), transparent)' }}
+        className="absolute inset-y-0 right-0 z-10 pointer-events-none"
+        style={{ width: '20%', background: 'linear-gradient(to left, rgba(2,6,23,1), transparent)' }}
       />
       <video
         src="/assets/mascote-embaixadinha.mp4"
@@ -157,7 +157,8 @@ function MascoteVideo() {
         loop
         muted
         playsInline
-        className="w-full h-auto object-contain"
+        className="w-full object-contain"
+        style={{ maxHeight: '260px' }}
       />
     </div>
   );
