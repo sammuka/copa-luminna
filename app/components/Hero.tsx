@@ -8,7 +8,7 @@ const TICKER_CONTENT = `${TICKER_TEXT} — ${TICKER_TEXT} — ${TICKER_TEXT}`;
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center md:justify-center relative px-6 pt-16 pb-6 md:py-24">
+    <section className="h-screen flex flex-col items-center justify-center relative px-6 pt-16 pb-6 md:py-24">
       <div className="flex flex-col items-center gap-5 md:gap-12 w-full max-w-7xl">
         <div
           className="glass px-4 py-2 rounded-full text-xs md:text-sm uppercase tracking-[0.15em] md:tracking-[0.3em] text-cyan-accent animate-[fade-in-up_0.8s_ease-out] whitespace-nowrap"
