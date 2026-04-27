@@ -91,7 +91,7 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
           <div className="flex-1 min-w-0">
             <div className="glass rounded-3xl border border-blue-400/30 shadow-[0_0_80px_rgba(59,130,246,0.25)] p-3 md:p-5 relative overflow-hidden">
               <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-accent to-transparent animate-[shimmer_4s_linear_infinite]" />
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-cyan-accent to-transparent animate-[shimmer_4s_linear_infinite]" />
               </div>
 
               <div className="absolute top-3 left-3 w-8 h-8 pointer-events-none animate-[pulse-glow_3s_ease-in-out_infinite]">
@@ -191,7 +191,7 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
                     </div>
                     <div className="w-full h-1.5 rounded-full bg-blue-900/60 overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-accent transition-all duration-200"
+                        className="h-full rounded-full bg-linear-to-r from-blue-500 to-cyan-accent transition-all duration-200"
                         style={{ width: `${progress}%` }}
                       />
                     </div>

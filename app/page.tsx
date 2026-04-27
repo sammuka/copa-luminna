@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from 'react';
-import AnimatedBackground from './components/AnimatedBackground';
 import Hero from './components/Hero';
 import LoadingOverlay from './components/LoadingOverlay';
 import PdfViewer from './components/PdfViewer';
@@ -29,7 +28,6 @@ export default function Home() {
   return (
     <>
       {!videoReady && <LoadingOverlay fadeOut={fadeOut} />}
-      <AnimatedBackground />
       <AudioPlayer />
       <main className="relative z-10">
         <ScrollVideoController

@@ -224,6 +224,106 @@ export default function ScrollVideoController({
           style={{ zIndex: 0, opacity: 0, ...(isMobile ? mobileMask : {}) }}
         />
 
+        {/* Efeito de fumaça ao redor do vídeo — apenas mobile */}
+        {isMobile && (
+          <>
+            {/* Halo central difuso */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                zIndex: 1,
+                background: 'radial-gradient(ellipse 70% 55% at 50% 52%, rgba(30,80,180,0.28) 0%, transparent 70%)',
+                animation: 'smokeBreath 4s ease-in-out infinite',
+              }}
+            />
+            {/* Névoa lateral esquerda */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                zIndex: 1,
+                background: 'radial-gradient(ellipse 45% 60% at 8% 55%, rgba(10,40,120,0.45) 0%, transparent 70%)',
+                animation: 'smokeDriftLeft 5s ease-in-out infinite',
+              }}
+            />
+            {/* Névoa lateral direita */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                zIndex: 1,
+                background: 'radial-gradient(ellipse 45% 60% at 92% 55%, rgba(10,40,120,0.45) 0%, transparent 70%)',
+                animation: 'smokeDriftRight 5s ease-in-out infinite',
+              }}
+            />
+            {/* Máscara top — funde borda superior com o fundo */}
+            <div
+              aria-hidden
+              className="absolute top-0 left-0 w-full pointer-events-none"
+              style={{
+                zIndex: 3,
+                height: '38%',
+                background: 'linear-gradient(to bottom, #020617 0%, rgba(2,6,23,0.85) 30%, rgba(2,6,23,0.4) 65%, transparent 100%)',
+              }}
+            />
+            {/* Névoa top — halo de fumaça azulada sobrevoando a borda superior */}
+            <div
+              aria-hidden
+              className="absolute top-0 left-0 w-full pointer-events-none"
+              style={{
+                zIndex: 4,
+                height: '45%',
+                background: 'radial-gradient(ellipse 90% 60% at 50% -5%, rgba(10,40,130,0.35) 0%, transparent 80%)',
+                animation: 'smokeTopDrift 6s ease-in-out infinite',
+              }}
+            />
+            {/* Máscara bottom — funde borda inferior com o fundo */}
+            <div
+              aria-hidden
+              className="absolute bottom-0 left-0 w-full pointer-events-none"
+              style={{
+                zIndex: 3,
+                height: '40%',
+                background: 'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.88) 28%, rgba(2,6,23,0.45) 60%, transparent 100%)',
+              }}
+            />
+            {/* Névoa bottom — halo de fumaça azulada emergindo da borda inferior */}
+            <div
+              aria-hidden
+              className="absolute bottom-0 left-0 w-full pointer-events-none"
+              style={{
+                zIndex: 4,
+                height: '50%',
+                background: 'radial-gradient(ellipse 90% 60% at 50% 110%, rgba(10,40,130,0.35) 0%, transparent 80%)',
+                animation: 'smokeBottomDrift 6s ease-in-out infinite',
+              }}
+            />
+            <style>{`
+              @keyframes smokeBreath {
+                0%, 100% { opacity: 0.7; transform: scale(1); }
+                50%       { opacity: 1;   transform: scale(1.08); }
+              }
+              @keyframes smokeDriftLeft {
+                0%, 100% { opacity: 0.6; transform: translateX(0px) scaleY(1); }
+                50%       { opacity: 1;   transform: translateX(6px) scaleY(1.05); }
+              }
+              @keyframes smokeDriftRight {
+                0%, 100% { opacity: 0.6; transform: translateX(0px) scaleY(1); }
+                50%       { opacity: 1;   transform: translateX(-6px) scaleY(1.05); }
+              }
+              @keyframes smokeTopDrift {
+                0%, 100% { opacity: 0.6; transform: scaleX(1) translateY(0px); }
+                50%       { opacity: 1;   transform: scaleX(1.06) translateY(6px); }
+              }
+              @keyframes smokeBottomDrift {
+                0%, 100% { opacity: 0.6; transform: scaleX(1) translateY(0px); }
+                50%       { opacity: 1;   transform: scaleX(1.06) translateY(-6px); }
+              }
+            `}</style>
+          </>
+        )}
+
         <div
           ref={overlayRef}
           aria-hidden

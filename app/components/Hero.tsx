@@ -28,7 +28,7 @@ export default function Hero() {
             width={360}
             height={90}
             priority
-            className="relative z-10 drop-shadow-[0_0_30px_rgba(59,130,246,0.6)] animate-[float_6s_ease-in-out_infinite] !w-48 md:!w-[360px] !h-auto"
+            className="relative z-10 drop-shadow-[0_0_30px_rgba(59,130,246,0.6)] animate-[float_6s_ease-in-out_infinite] w-48! md:w-[360px]! h-auto!"
           />
         </div>
 
@@ -39,7 +39,7 @@ export default function Hero() {
           <span className="block font-display font-black text-4xl md:text-7xl lg:text-8xl text-white leading-[0.95]">
             A COPA DO MUNDO
           </span>
-          <span className="block font-display font-black text-4xl md:text-7xl lg:text-8xl text-gradient-blue leading-[0.95] animate-[gradient-shift_6s_ease_infinite] bg-[length:200%_auto]">
+          <span className="block font-display font-black text-4xl md:text-7xl lg:text-8xl text-gradient-blue leading-[0.95] animate-[gradient-shift_6s_ease_infinite] bg-size-[200%_auto]">
             ESTÁ CHEGANDO.
           </span>
         </div>
