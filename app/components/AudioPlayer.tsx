@@ -7,12 +7,35 @@ export default function AudioPlayer() {
   const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    const audio = audioRef.current;
+    const audio = audioRef.current as HTMLAudioElement;
     if (!audio) return;
-    audio.volume = 0.5;
-    audio.loop = true;
-    audio.muted = true;
-    audio.play().catch(() => {});
+
+    function handleFirstInteraction() {
+      audio.muted = false;
+      audio.volume = 0.3;
+      audio.loop = true;
+
+      audio.play().then(() => {
+        setMuted(false);
+      }).catch(() => {});
+
+      window.removeEventListener("click", handleFirstInteraction);
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("pointerdown", handleFirstInteraction);
+      window.removeEventListener("keydown", handleFirstInteraction);
+    }
+
+    window.addEventListener("click", handleFirstInteraction);
+    window.addEventListener("touchstart", handleFirstInteraction);
+    window.addEventListener("pointerdown", handleFirstInteraction);
+    window.addEventListener("keydown", handleFirstInteraction);
+
+    return () => {
+      window.removeEventListener("click", handleFirstInteraction);
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("pointerdown", handleFirstInteraction);
+      window.removeEventListener("keydown", handleFirstInteraction);
+    };
   }, []);
 
   function toggle() {
@@ -26,7 +49,7 @@ export default function AudioPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src="/assets/musica_copa.mpeg" preload="none" />
+      <audio ref={audioRef} src="/assets/musica_copa.mpeg" preload="auto" />
 
       <button
         onClick={toggle}
