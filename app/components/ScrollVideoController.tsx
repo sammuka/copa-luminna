@@ -9,6 +9,7 @@ interface ScrollVideoControllerProps {
   scrubVhMobile?: number;
   ease?: number;
   autoScrollSpeed?: number;
+  onVideoReady?: () => void;
 }
 
 type VideoWithFastSeek = HTMLVideoElement & { fastSeek?: (t: number) => void };
@@ -20,11 +21,13 @@ export default function ScrollVideoController({
   scrubVhMobile = 380,
   ease = 0.12,
   autoScrollSpeed = 8,
+  onVideoReady,
 }: ScrollVideoControllerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const heroWrapRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -48,6 +51,9 @@ export default function ScrollVideoController({
     video.autoplay = false;
     video.pause();
 
+    const handleCanPlayThrough = () => onVideoReady?.();
+    video.addEventListener('canplaythrough', handleCanPlayThrough, { once: true });
+
     const HERO_END = 0.22;
     const VIDEO_START = 0.15;
     const VIDEO_END = 0.95;
@@ -63,6 +69,8 @@ export default function ScrollVideoController({
       if (range <= 0) return 0;
       return clamp01(-container.getBoundingClientRect().top / range);
     };
+
+    const scrollHint = scrollHintRef.current;
 
     let currentHero = 0;
     let lastSeekedTime = -1;
@@ -144,6 +152,12 @@ export default function ScrollVideoController({
       video.style.opacity = String(currentHero);
       overlay.style.opacity = String(1 - currentHero);
 
+      // Show scroll hint only near end of section (p > 0.75)
+      if (scrollHint) {
+        const hintOpacity = clamp01((p - 0.75) / 0.15);
+        scrollHint.style.opacity = String(hintOpacity);
+      }
+
       rafId = requestAnimationFrame(masterLoop);
     };
 
@@ -152,7 +166,7 @@ export default function ScrollVideoController({
     const opts: AddEventListenerOptions = { passive: true };
 
     const onScrollFromTop = () => {
-      if (window.scrollY === 0 && autoScrollSpeed > 0 && !isAutoScrolling) {
+      if ((window.scrollY >=0 && window.scrollY <= 100) && autoScrollSpeed > 0 && !isAutoScrolling) {
         isAutoScrolling = true;
         startVideoPlay();
       }
@@ -175,19 +189,22 @@ export default function ScrollVideoController({
       running = false;
       cancelAnimationFrame(rafId);
       video.pause();
+      video.removeEventListener('canplaythrough', handleCanPlayThrough);
       window.removeEventListener('wheel', onScrollFromTop);
       window.removeEventListener('touchmove', onScrollFromTop);
       window.removeEventListener('touchstart', onUserInterrupt);
       window.removeEventListener('pointerdown', onUserInterrupt);
       window.removeEventListener('keydown', onUserInterrupt);
     };
-  }, [ease, autoScrollSpeed]);
+  }, [ease, autoScrollSpeed, onVideoReady]);
 
   const totalVh = 100 + (isMobile ? scrubVhMobile : scrubVh);
 
   const mobileMask = {
-    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%)',
-    maskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%)',
+    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+    WebkitMaskComposite: 'destination-in',
+    maskImage: 'linear-gradient(to right, transparent 0%, black 40%, black 60%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+    maskComposite: 'intersect',
   };
 
   return (
@@ -230,6 +247,37 @@ export default function ScrollVideoController({
           style={{ zIndex: 10, willChange: 'opacity, transform' }}
         >
           {children}
+        </div>
+
+        {/* Bottom fade gradient blending into #051b3a */}
+        <div
+          aria-hidden
+          className="absolute bottom-0 left-0 w-full pointer-events-none"
+          style={{
+            zIndex: 20,
+            height: '220px',
+            background: 'linear-gradient(to bottom, transparent 0%, #051b3a 100%)',
+          }}
+        />
+
+        {/* Scroll hint — appears near end of scroll section */}
+        <div
+          ref={scrollHintRef}
+          aria-hidden
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 pointer-events-none"
+          style={{ zIndex: 25, opacity: 0, transition: 'opacity 0.4s ease' }}
+        >
+          <span className="text-blue-300/90 text-xs tracking-widest uppercase font-light">role para ver a tabela</span>
+          <svg
+            width="20" height="28" viewBox="0 0 20 28" fill="none"
+            className="animate-bounce"
+          >
+            <rect x="1" y="1" width="18" height="22" rx="9" stroke="rgba(147,197,253,0.4)" strokeWidth="1.5" />
+            <rect x="8.5" y="5" width="3" height="6" rx="1.5" fill="rgba(147,197,253,0.6)">
+              <animate attributeName="y" values="5;10;5" dur="1.6s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="1;0;1" dur="1.6s" repeatCount="indefinite" />
+            </rect>
+          </svg>
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@ export default function AudioPlayer() {
         title={muted ? "Ligar som" : "Desligar som"}
         className={`fixed bottom-5 right-5 md:left-5 md:right-auto z-50 flex items-center gap-2 px-3 h-11 rounded-full${muted ? " animate-pulse" : ""}`}
         style={{
-          background: muted ? "rgba(220,50,50,0.75)" : "rgba(0,0,0,0.55)",
+          background: muted ? "rgba(14, 124, 32, 0.781)" : "rgba(0,0,0,0.55)",
           border: "1.5px solid rgba(255,255,255,0.25)",
           backdropFilter: "blur(8px)",
           color: "#fff",

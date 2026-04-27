@@ -177,3 +177,27 @@ body {
   background: var(--blue-300);
   color: var(--navy-deep);
 }
+
+/* ── PDF scroll area ──────────────────────────────────────────────────── */
+.pdf-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue-500) transparent;
+}
+
+.pdf-scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.pdf-scroll-area::-webkit-scrollbar-track {
+  background: rgba(15, 42, 92, 0.4);
+  border-radius: 3px;
+}
+
+.pdf-scroll-area::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--blue-500), var(--cyan-accent));
+  border-radius: 3px;
+}
+
+.pdf-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--blue-400), var(--cyan-accent));
+}
