@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import CornerOrnaments from "./tabela/CornerOrnaments";
 
 interface PdfViewerProps {
   src: string;
@@ -94,55 +95,7 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-cyan-accent to-transparent animate-[shimmer_4s_linear_infinite]" />
               </div>
 
-              <div className="absolute top-3 left-3 w-8 h-8 pointer-events-none animate-[pulse-glow_3s_ease-in-out_infinite]">
-                <svg viewBox="0 0 32 32" className="text-blue-400/60">
-                  <path
-                    d="M 0 0 L 0 16 M 0 0 L 16 0"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                </svg>
-              </div>
-              <div
-                className="absolute top-3 right-3 w-8 h-8 pointer-events-none animate-[pulse-glow_3s_ease-in-out_infinite]"
-                style={{ animationDelay: "0.75s" }}
-              >
-                <svg viewBox="0 0 32 32" className="text-blue-400/60">
-                  <path
-                    d="M 32 0 L 32 16 M 32 0 L 16 0"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                </svg>
-              </div>
-              <div
-                className="absolute bottom-3 left-3 w-8 h-8 pointer-events-none animate-[pulse-glow_3s_ease-in-out_infinite]"
-                style={{ animationDelay: "1.5s" }}
-              >
-                <svg viewBox="0 0 32 32" className="text-blue-400/60">
-                  <path
-                    d="M 0 32 L 0 16 M 0 32 L 16 32"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                </svg>
-              </div>
-              <div
-                className="absolute bottom-3 right-3 w-8 h-8 pointer-events-none animate-[pulse-glow_3s_ease-in-out_infinite]"
-                style={{ animationDelay: "2.25s" }}
-              >
-                <svg viewBox="0 0 32 32" className="text-blue-400/60">
-                  <path
-                    d="M 32 32 L 32 16 M 32 32 L 16 32"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                </svg>
-              </div>
+              <CornerOrnaments />
 
               {/* Toolbar */}
               <div className="flex items-center justify-between mb-3 px-4 py-2 bg-navy-900/80 rounded-xl border border-blue-400/20">

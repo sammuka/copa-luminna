@@ -34,13 +34,13 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null | undefined>(undefined);
 
   useEffect(() => {
-    setTimeLeft(computeTimeLeft(targetDate));
-
-    const interval = setInterval(() => {
-      setTimeLeft(computeTimeLeft(targetDate));
-    }, 1000);
-
-    return () => clearInterval(interval);
+    const update = () => setTimeLeft(computeTimeLeft(targetDate));
+    const initialTimer = setTimeout(update, 0);
+    const interval = setInterval(update, 1000);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
   }, [targetDate]);
 
   if (timeLeft === undefined) {

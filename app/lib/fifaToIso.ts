@@ -1,0 +1,57 @@
+// ENG and SCO have no official ISO 3166-1 alpha-2 (UK subdivisions); they use emoji fallback only.
+export const FIFA_TO_ISO: Record<string, string> = {
+  MEX: 'MX',
+  RSA: 'ZA',
+  KOR: 'KR',
+  CZE: 'CZ',
+  CAN: 'CA',
+  BIH: 'BA',
+  QAT: 'QA',
+  SUI: 'CH',
+  BRA: 'BR',
+  MAR: 'MA',
+  HAI: 'HT',
+  USA: 'US',
+  PAR: 'PY',
+  AUS: 'AU',
+  TUR: 'TR',
+  GER: 'DE',
+  CUW: 'CW',
+  CIV: 'CI',
+  ECU: 'EC',
+  NED: 'NL',
+  JPN: 'JP',
+  SWE: 'SE',
+  TUN: 'TN',
+  IRN: 'IR',
+  NZL: 'NZ',
+  BEL: 'BE',
+  EGY: 'EG',
+  ESP: 'ES',
+  CPV: 'CV',
+  KSA: 'SA',
+  URU: 'UY',
+  FRA: 'FR',
+  SEN: 'SN',
+  IRQ: 'IQ',
+  NOR: 'NO',
+  ARG: 'AR',
+  ALG: 'DZ',
+  AUT: 'AT',
+  JOR: 'JO',
+  POR: 'PT',
+  COD: 'CD',
+  UZB: 'UZ',
+  COL: 'CO',
+  CRO: 'HR',
+  GHA: 'GH',
+  PAN: 'PA',
+};
+
+export function getFlagPropsForCode(
+  code: string,
+  emojiFallback: string
+): { iso2?: string; emojiFallback: string } {
+  const iso2 = FIFA_TO_ISO[code];
+  return iso2 ? { iso2, emojiFallback } : { emojiFallback };
+}
