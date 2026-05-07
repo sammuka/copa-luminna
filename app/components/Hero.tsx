@@ -9,6 +9,18 @@ const TICKER_CONTENT = `${TICKER_TEXT} — ${TICKER_TEXT} — ${TICKER_TEXT}`;
 export default function Hero() {
   return (
     <section className="h-screen flex flex-col items-center justify-center relative px-6 pt-16 pb-6 md:py-24">
+      {/* Logo SISTRAN - canto superior direito */}
+      <div className="absolute top-4 right-4 md:top-6 md:right-6 z-20 glass rounded-xl px-3 py-2 border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+        <Image
+          src="/assets/Logo-sistran.png"
+          alt="SISTRAN - Beyond Technology"
+          width={140}
+          height={46}
+          className="w-28 md:w-36 h-auto"
+          priority
+        />
+      </div>
+
       <div className="flex flex-col items-center gap-5 md:gap-12 w-full max-w-7xl">
         <div
           className="glass px-4 py-2 rounded-full text-xs md:text-sm uppercase tracking-[0.15em] md:tracking-[0.3em] text-cyan-accent animate-[fade-in-up_0.8s_ease-out] whitespace-nowrap"

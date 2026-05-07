@@ -68,14 +68,14 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
     <div style={{ backgroundColor: "#051b3a" }}>
       <section
         id="tabela"
-        className="scroll-mt-20 py-10 md:py-28 max-w-7xl mx-auto px-6 relative"
+        className="scroll-mt-20 py-10 md:py-28 max-w-7xl mx-auto px-6 relative z-10"
       >
         <div className="text-center mb-12 space-y-5">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300 text-xs font-semibold uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300 text-xs font-semibold uppercase tracking-widest animate-[pulse-glow_3s_ease-in-out_infinite]">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             Em breve · Cadastros abertos
           </div>
-          <h2 className="font-display font-black text-3xl md:text-5xl text-gradient-blue">
+          <h2 className="font-display font-black text-3xl md:text-5xl text-gradient-blue animate-[gradient-shift_6s_ease_infinite] bg-size-[200%_auto]">
             Tabela Oficial · Copa do Mundo 2026
           </h2>
           <p className="text-blue-100/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
@@ -215,29 +215,43 @@ export default function PdfViewer({ src, title }: PdfViewerProps) {
           </div>
         </div>
 
-        <footer className="border-t border-blue-400/10 mt-10 px-6 pt-8 pb-6">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <footer className="relative mt-10 pt-8 pb-6 px-6">
+          {/* linha topo com shimmer */}
+          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-blue-400/30 to-transparent" />
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <Image
               src="/assets/luminna-horizontal-branca.png"
               alt="Luminna AI"
               width={100}
               height={25}
-              className="opacity-60"
+              className="opacity-50 drop-shadow-[0_0_12px_rgba(59,130,246,0.4)]"
             />
             <p className="text-xs text-blue-300/40 tracking-wide text-center">
               © 2026 Luminna AI · Todos os direitos reservados · Copa do Mundo
               FIFA 26™
             </p>
-            <div className="flex items-center gap-4 text-xs text-blue-300/40">
-              <span className="hover:text-blue-300/70 transition-colors cursor-pointer">
-                Sobre
-              </span>
-              <span className="hover:text-blue-300/70 transition-colors cursor-pointer">
-                Contato
-              </span>
-              <span className="hover:text-blue-300/70 transition-colors cursor-pointer">
+            <div className="flex flex-col items-end gap-1.5">
+              <a
+                href="https://www.sistran.com.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/assets/Logo-sistran.png"
+                  alt="SISTRAN - Beyond Technology"
+                  width={80}
+                  height={27}
+                  className="w-16 md:w-20 h-auto opacity-50 hover:opacity-90 drop-shadow-[0_0_8px_rgba(34,211,238,0.3)] transition-opacity duration-300"
+                />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/sistran/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-blue-300/30 hover:text-blue-300/70 tracking-widest uppercase transition-colors duration-300"
+              >
                 LinkedIn
-              </span>
+              </a>
             </div>
           </div>
         </footer>

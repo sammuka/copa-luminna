@@ -28,6 +28,7 @@ export default function ScrollVideoController({
   const overlayRef = useRef<HTMLDivElement>(null);
   const heroWrapRef = useRef<HTMLDivElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
+  const sistranBadgeRef = useRef<HTMLDivElement>(null);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -156,6 +157,13 @@ export default function ScrollVideoController({
       if (scrollHint) {
         const hintOpacity = clamp01((p - 0.75) / 0.15);
         scrollHint.style.opacity = String(hintOpacity);
+      }
+
+      // Badge SISTRAN aparece junto com o scroll hint
+      const badge = sistranBadgeRef.current;
+      if (badge) {
+        const badgeOpacity = clamp01((p - 0.75) / 0.15);
+        badge.style.opacity = String(badgeOpacity);
       }
 
       rafId = requestAnimationFrame(masterLoop);
@@ -378,6 +386,28 @@ export default function ScrollVideoController({
               <animate attributeName="opacity" values="1;0;1" dur="1.6s" repeatCount="indefinite" />
             </rect>
           </svg>
+        </div>
+
+        {/* Badge SISTRAN — canto inferior direito; mobile sobe 80px para não colidir com AudioPlayer */}
+        <div
+          ref={sistranBadgeRef}
+          aria-hidden
+          className="absolute bottom-[116px] md:bottom-8 right-4 md:right-6 pointer-events-none"
+          style={{ zIndex: 25, opacity: 0, transition: 'opacity 0.4s ease' }}
+        >
+          <div
+            className="px-3 py-2 rounded-xl border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
+            style={{ background: 'rgba(15,42,92,0.35)', backdropFilter: 'blur(16px)' }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/Logo-sistran.png"
+              alt="SISTRAN - Beyond Technology"
+              width={112}
+              height={37}
+              className="w-28 h-auto"
+            />
+          </div>
         </div>
       </div>
     </div>
